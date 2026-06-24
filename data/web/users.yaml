@@ -1,0 +1,18 @@
+valid_user:
+  username: "testuser"
+  password: "Test@123456"
+
+invalid_user:
+  username: "invalid"
+  password: "wrong"
+
+login_scenarios:
+  - username: ""
+    password: ""
+    expected_error: "Username is required"
+  - username: "testuser"
+    password: ""
+    expected_error: "Password is required"
+  - username: "invalid"
+    password: "wrong"
+    expected_error: "Invalid credentials"
