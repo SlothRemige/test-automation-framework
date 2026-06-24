@@ -1,0 +1,11 @@
+home_screen:
+  expected_header: "Home"
+  expected_greeting: "Welcome"
+
+login_scenarios:
+  - username: "testuser"
+    password: "Test@123456"
+    expected: "success"
+  - username: "invalid"
+    password: "wrong"
+    expected: "error"
