@@ -19,12 +19,12 @@ def env(request) -> str:
 
 
 @pytest.fixture(scope="session")
-def config(env: str) -> AppConfig:
+def app_config(env: str) -> AppConfig:
     return load_config(env)
 
 
 @pytest.fixture(scope="session", autouse=True)
-def _setup_logging(config: AppConfig):
+def _setup_logging(app_config: AppConfig):
     setup_logging("DEBUG")
 
 
