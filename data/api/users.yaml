@@ -1,0 +1,14 @@
+valid_user:
+  username: "testuser"
+  password: "Test@123456"
+  email: "testuser@example.com"
+
+admin_user:
+  username: "admin"
+  password: "Admin@123456"
+  email: "admin@example.com"
+
+invalid_user:
+  username: "invalid"
+  password: "wrong"
+  email: "invalid@example.com"
