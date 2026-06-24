@@ -3,6 +3,8 @@ import pytest
 from core.config_loader import load_config, AppConfig
 from core.logger import setup_logging
 
+pytest_plugins = ["fixtures.auth_fixtures"]
+
 
 def pytest_addoption(parser):
     parser.addoption(
