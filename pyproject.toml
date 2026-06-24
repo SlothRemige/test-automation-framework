@@ -1,0 +1,39 @@
+[project]
+name = "test-automation-framework"
+version = "0.1.0"
+description = "Multi-platform test automation framework (Web, App, API)"
+requires-python = ">=3.11"
+
+dependencies = [
+    "pytest>=8.3",
+    "playwright>=1.48",
+    "Appium-Python-Client>=4.0",
+    "requests>=2.32",
+    "pyyaml>=6.0",
+    "pydantic-settings>=2.0",
+    "structlog>=24.0",
+    "pytest-xdist>=3.6",
+    "pytest-check>=2.0",
+    "responses>=0.25",
+    "allure-pytest>=2.13",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest-watch>=0.1",
+    "ipython>=8.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = ["-v", "--strict-markers", "--tb=short"]
+markers = [
+    "smoke: 冒烟测试",
+    "p0: 核心功能",
+    "p1: 重要功能",
+    "p2: 边缘场景",
+    "web: Web端测试",
+    "api: API端测试",
+    "mobile: 移动端测试",
+]
