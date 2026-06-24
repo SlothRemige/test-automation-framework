@@ -2,7 +2,12 @@
 name = "test-automation-framework"
 version = "0.1.0"
 description = "Multi-platform test automation framework (Web, App, API)"
+readme = "README.md"
 requires-python = ">=3.11"
+authors = [
+    {name = "Test Team"}
+]
+license = {text = "MIT"}
 
 dependencies = [
     "pytest>=8.3",
@@ -23,6 +28,10 @@ dev = [
     "pytest-watch>=0.1",
     "ipython>=8.0",
 ]
+
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
