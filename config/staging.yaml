@@ -1,0 +1,10 @@
+environment: staging
+web:
+  base_url: "https://staging.example.com"
+  timeout: 30000
+api:
+  base_url: "https://staging-api.example.com"
+  timeout: 30
+mobile:
+  appium_server: "http://localhost:4723"
+  platform_version: "14.0"

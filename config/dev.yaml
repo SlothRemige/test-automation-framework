@@ -1,0 +1,10 @@
+environment: dev
+web:
+  base_url: "https://dev.example.com"
+  timeout: 30000
+api:
+  base_url: "https://dev-api.example.com"
+  timeout: 30
+mobile:
+  appium_server: "http://localhost:4723"
+  platform_version: "14.0"
