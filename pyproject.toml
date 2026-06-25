@@ -28,6 +28,7 @@ dependencies = [
 dev = [
     "pytest-watch>=0.1",
     "ipython>=8.0",
+    "mypy>=1.0",
 ]
 
 [build-system]
@@ -47,3 +48,9 @@ markers = [
     "api: API端测试",
     "mobile: 移动端测试",
 ]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true

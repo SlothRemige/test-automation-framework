@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import yaml
 
@@ -13,7 +13,7 @@ def load_yaml(relative_path: str) -> dict[str, Any]:
     if not filepath.exists():
         raise FileNotFoundError(f"Data file not found: {filepath}")
     with open(filepath) as f:
-        return yaml.safe_load(f)
+        return cast(dict[str, Any], yaml.safe_load(f))
 
 
 def load_json(relative_path: str) -> dict[str, Any]:
@@ -21,4 +21,4 @@ def load_json(relative_path: str) -> dict[str, Any]:
     if not filepath.exists():
         raise FileNotFoundError(f"Data file not found: {filepath}")
     with open(filepath) as f:
-        return json.load(f)
+        return cast(dict[str, Any], json.load(f))

@@ -1,6 +1,8 @@
 from appium.webdriver.webdriver import WebDriver
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 class BaseScreen:
@@ -23,7 +25,7 @@ class BaseScreen:
     def is_displayed(self, by: str, value: str) -> bool:
         try:
             return self.driver.find_element(by, value).is_displayed()
-        except Exception:
+        except WebDriverException:
             return False
 
     def take_screenshot(self, name: str) -> str:
