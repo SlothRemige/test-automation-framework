@@ -39,3 +39,6 @@ class UserApi(BaseApi):
 
     def delete_user(self, user_id: str) -> ApiResponse:
         return self._call("delete", f"/users/{user_id}")
+
+    def list_users(self, page: int = 1, limit: int = 10) -> ApiResponse:
+        return self._call("get", f"/users?page={page}&limit={limit}")

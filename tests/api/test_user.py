@@ -128,3 +128,91 @@ class TestUserEdgeCases:
         assert resp.status_code == 400
         assert resp["status"] == "error"
         assert resp["message"] == "Validation failed"
+
+
+@pytest.mark.api
+@pytest.mark.p1
+class TestUserSecurity:
+    def test_sql_injection_rejected(self, mock_api, user_api):
+        resp = user_api.login(username="admin'--", password="x")
+        assert resp.status_code == 400
+        assert resp["status"] == "error"
+        assert "Invalid input" in resp["message"]
+
+    def test_xss_payload_rejected(self, mock_api, user_api):
+        resp = user_api.create_user({"username": "<script>alert(1)</script>"})
+        assert resp.status_code == 400
+        assert resp["message"] == "XSS rejected"
+
+    def test_payload_too_large(self, mock_api, user_api):
+        resp = user_api.create_user({"username": "a" * 1000})
+        assert resp.status_code == 413
+        assert resp["message"] == "Payload too large"
+
+    @pytest.mark.parametrize(
+        "username,password",
+        [
+            ("testuser", "wrong_password"),
+            ("nonexistent", "any_password"),
+            ("testuser@example.com", "Test@123456"),
+        ],
+    )
+    def test_login_variations(self, mock_api, user_api, username, password):
+        resp = user_api.login(username=username, password=password)
+        assert resp.status_code == 401
+        assert resp["status"] == "error"
+
+
+@pytest.mark.api
+@pytest.mark.p1
+class TestUserNegativeCrud:
+    def test_update_nonexistent_user(self, mock_api, user_api):
+        resp = user_api.update_user("999", {"username": "nope"})
+        assert resp.status_code == 404
+        assert resp["message"] == "Not found"
+
+    def test_delete_nonexistent_user(self, mock_api, user_api):
+        resp = user_api.delete_user("999")
+        assert resp.status_code == 404
+        assert resp["message"] == "Not found"
+
+    def test_create_duplicate_username(self, mock_api, user_api):
+        payload = {"username": "testuser", "email": "new@example.com", "password": "Pass@123"}
+        resp = user_api.create_user(payload)
+        assert resp.status_code == 409
+        assert resp["message"] == "Username already exists"
+
+
+@pytest.mark.api
+@pytest.mark.p2
+class TestUserPagination:
+    def test_list_users_page1(self, mock_api, user_api):
+        resp = user_api.list_users(page=1, limit=10)
+        assert resp.status_code == 200
+        assert resp["total"] == 0
+        assert resp["page"] == 1
+
+    def test_list_users_invalid_page(self, mock_api, user_api):
+        resp = user_api.list_users(page=0, limit=10)
+        assert resp.status_code == 400
+        assert resp["message"] == "Invalid page"
+
+    def test_list_users_limit_too_high(self, mock_api, user_api):
+        resp = user_api.list_users(page=1, limit=1000)
+        assert resp.status_code == 400
+        assert resp["message"] == "Limit too large"
+
+
+@pytest.mark.api
+@pytest.mark.p2
+class TestUserResilience:
+    def test_rate_limit_429(self, mock_api, user_api):
+        resp = user_api.list_users(page=1, limit=1)
+        assert resp.status_code == 429
+        assert resp["message"] == "Too many requests"
+
+    def test_service_unavailable_triggers_retry(self, mock_api, user_api):
+        import requests as req
+
+        with pytest.raises(req.exceptions.RetryError):
+            user_api.get_profile("503")
