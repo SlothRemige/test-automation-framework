@@ -31,6 +31,9 @@ def appium_driver(app_config, platform):
         options.platform_version = app_config.mobile.platform_version
         options.automation_name = "XCUITest"
 
-    driver = webdriver.Remote(server_url, options=options)
+    try:
+        driver = webdriver.Remote(server_url, options=options)
+    except Exception:
+        pytest.skip(f"Appium server not available at {server_url}")
     yield driver
     driver.quit()

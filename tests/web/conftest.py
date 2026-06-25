@@ -32,16 +32,42 @@ def mock_web_login(page, app_config):
       <div class="success-message" style="display:none">Welcome</div>
     </body></html>"""
 
-    result_html = """<html><body>
-      <div class="error-message">Username is required Password is required Invalid credentials</div>
+    success_html = """<html><body>
       <div class="success-message">Welcome</div>
+    </body></html>"""
+
+    error_html_required = """<html><body>
+      <div class="error-message">Username is required</div>
+    </body></html>"""
+
+    error_html_password = """<html><body>
+      <div class="error-message">Password is required</div>
+    </body></html>"""
+
+    error_html_invalid = """<html><body>
+      <div class="error-message">Invalid credentials</div>
     </body></html>"""
 
     def handle_route(route):
         if route.request.method == "GET":
             route.fulfill(status=200, content_type="text/html", body=login_form_html)
+            return
+
+        from urllib.parse import parse_qs
+
+        post_data = route.request.post_data or ""
+        params = parse_qs(post_data)
+        username = params.get("username", [""])[0]
+        password = params.get("password", [""])[0]
+
+        if username == "testuser" and password == "Test@123456":
+            route.fulfill(status=200, content_type="text/html", body=success_html)
+        elif not username:
+            route.fulfill(status=400, content_type="text/html", body=error_html_required)
+        elif not password:
+            route.fulfill(status=400, content_type="text/html", body=error_html_password)
         else:
-            route.fulfill(status=200, content_type="text/html", body=result_html)
+            route.fulfill(status=401, content_type="text/html", body=error_html_invalid)
 
     page.route(f"{base}/**", handle_route)
     yield page
