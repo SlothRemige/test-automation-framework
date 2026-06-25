@@ -42,7 +42,9 @@ def load_config(env: str | None = None) -> AppConfig:
 
     env_name = raw.get("environment")
     if env_name is None:
-        raise ValueError(f"Config file {config_path} missing required 'environment' key")
+        raise ValueError(
+            f"Config file {config_path} missing required 'environment' key"
+        )
 
     return AppConfig(
         environment=env_name,

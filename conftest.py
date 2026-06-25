@@ -50,22 +50,26 @@ def pytest_sessionfinish(session):
     if allure_dir:
         env_file = Path(allure_dir) / "environment.properties"
         env_file.write_text(
-            f"Environment={os.getenv('TEST_ENV', 'dev')}\n"
-            f"Python={os.sys.version}\n"
+            f"Environment={os.getenv('TEST_ENV', 'dev')}\nPython={os.sys.version}\n"
         )
         categories = Path(allure_dir) / "categories.json"
-        categories.write_text(json.dumps([
-            {
-                "name": "Ignored tests",
-                "matchedStatuses": ["skipped"],
-            },
-            {
-                "name": "Infrastructure problems",
-                "matchedStatuses": ["broken", "error"],
-                "messageRegex": ".*(ConnectionError|Timeout|ConnectionRefusedError).*",
-            },
-            {
-                "name": "Product defects",
-                "matchedStatuses": ["failed"],
-            },
-        ], indent=2))
+        categories.write_text(
+            json.dumps(
+                [
+                    {
+                        "name": "Ignored tests",
+                        "matchedStatuses": ["skipped"],
+                    },
+                    {
+                        "name": "Infrastructure problems",
+                        "matchedStatuses": ["broken", "error"],
+                        "messageRegex": ".*(ConnectionError|Timeout|ConnectionRefusedError).*",
+                    },
+                    {
+                        "name": "Product defects",
+                        "matchedStatuses": ["failed"],
+                    },
+                ],
+                indent=2,
+            )
+        )

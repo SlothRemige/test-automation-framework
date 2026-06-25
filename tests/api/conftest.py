@@ -43,11 +43,20 @@ def mock_api(app_config):
         rsps.add(
             responses.POST,
             f"{base}/users",
-            json={"id": "123", "username": "newuser", "email": "new@example.com", "status": "created"},
+            json={
+                "id": "123",
+                "username": "newuser",
+                "email": "new@example.com",
+                "status": "created",
+            },
             status=201,
             match=[
                 responses.matchers.json_params_matcher(
-                    {"username": "newuser", "email": "new@example.com", "password": "Pass@123"}
+                    {
+                        "username": "newuser",
+                        "email": "new@example.com",
+                        "password": "Pass@123",
+                    }
                 )
             ],
         )
@@ -57,11 +66,7 @@ def mock_api(app_config):
             f"{base}/users",
             json={"status": "error", "message": "Internal server error"},
             status=500,
-            match=[
-                responses.matchers.json_params_matcher(
-                    {"username": "trigger_500"}
-                )
-            ],
+            match=[responses.matchers.json_params_matcher({"username": "trigger_500"})],
         )
         # Create user with invalid payload → validation error (catch-all)
         rsps.add(
@@ -81,7 +86,12 @@ def mock_api(app_config):
         rsps.add(
             responses.PUT,
             f"{base}/users/123",
-            json={"id": "123", "username": "updateduser", "email": "updated@example.com", "status": "updated"},
+            json={
+                "id": "123",
+                "username": "updateduser",
+                "email": "updated@example.com",
+                "status": "updated",
+            },
             status=200,
         )
         # Delete user → success

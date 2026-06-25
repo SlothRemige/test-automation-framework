@@ -46,7 +46,11 @@ class TestUserProfile:
 @pytest.mark.p0
 class TestUserCrud:
     def test_create_user_success(self, mock_api, user_api):
-        payload = {"username": "newuser", "email": "new@example.com", "password": "Pass@123"}
+        payload = {
+            "username": "newuser",
+            "email": "new@example.com",
+            "password": "Pass@123",
+        }
         resp = user_api.create_user(payload)
         assert resp["status"] == "created"
         assert resp["id"] == "123"

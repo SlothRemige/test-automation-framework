@@ -31,7 +31,9 @@ class TestLoginValidation:
         "username,password,expected_error",
         [(s["username"], s["password"], s["expected_error"]) for s in _scenarios],
     )
-    def test_login_validation(self, mock_web_login, page, app_config, username, password, expected_error):
+    def test_login_validation(
+        self, mock_web_login, page, app_config, username, password, expected_error
+    ):
         login_page = LoginPage(page)
         login_page.navigate(app_config.web.base_url)
         login_page.login(username, password)

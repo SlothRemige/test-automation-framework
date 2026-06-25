@@ -1,7 +1,6 @@
 from appium.webdriver.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 
 
 class BaseScreen:
@@ -10,14 +9,10 @@ class BaseScreen:
         self.wait = WebDriverWait(driver, 10)
 
     def find_element(self, by: str, value: str):
-        return self.wait.until(
-            EC.presence_of_element_located((by, value))
-        )
+        return self.wait.until(EC.presence_of_element_located((by, value)))
 
     def find_elements(self, by: str, value: str):
-        return self.wait.until(
-            EC.presence_of_all_elements_located((by, value))
-        )
+        return self.wait.until(EC.presence_of_all_elements_located((by, value)))
 
     def click(self, by: str, value: str) -> None:
         self.find_element(by, value).click()
