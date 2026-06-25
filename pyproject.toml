@@ -21,6 +21,7 @@ dependencies = [
     "pytest-check>=2.0",
     "responses>=0.25",
     "allure-pytest>=2.13",
+    "pytest-rerunfailures>=14.0",
 ]
 
 [project.optional-dependencies]
@@ -36,7 +37,7 @@ build-backend = "setuptools.build_meta"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
-addopts = ["-v", "--strict-markers", "--tb=short"]
+addopts = ["-v", "--strict-markers", "--tb=short", "--reruns", "1", "--reruns-delay", "0.5"]
 markers = [
     "smoke: 冒烟测试",
     "p0: 核心功能",

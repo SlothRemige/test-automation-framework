@@ -38,3 +38,34 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "web: Web端测试")
     config.addinivalue_line("markers", "api: API端测试")
     config.addinivalue_line("markers", "mobile: 移动端测试")
+
+
+def pytest_sessionfinish(session):
+    """Write Allure environment info after test session completes."""
+    import json
+    import os
+    from pathlib import Path
+
+    allure_dir = session.config.getoption("--alluredir", default=None)
+    if allure_dir:
+        env_file = Path(allure_dir) / "environment.properties"
+        env_file.write_text(
+            f"Environment={os.getenv('TEST_ENV', 'dev')}\n"
+            f"Python={os.sys.version}\n"
+        )
+        categories = Path(allure_dir) / "categories.json"
+        categories.write_text(json.dumps([
+            {
+                "name": "Ignored tests",
+                "matchedStatuses": ["skipped"],
+            },
+            {
+                "name": "Infrastructure problems",
+                "matchedStatuses": ["broken", "error"],
+                "messageRegex": ".*(ConnectionError|Timeout|ConnectionRefusedError).*",
+            },
+            {
+                "name": "Product defects",
+                "matchedStatuses": ["failed"],
+            },
+        ], indent=2))
