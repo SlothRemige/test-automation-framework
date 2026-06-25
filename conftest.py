@@ -27,7 +27,10 @@ def app_config(env: str) -> AppConfig:
 
 @pytest.fixture(scope="session", autouse=True)
 def _setup_logging(app_config: AppConfig):
-    setup_logging("DEBUG")
+    import os
+
+    level = os.getenv("LOG_LEVEL", "INFO")
+    setup_logging(level)
 
 
 def pytest_configure(config):

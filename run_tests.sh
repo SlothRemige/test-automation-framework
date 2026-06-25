@@ -56,6 +56,10 @@ case "$CMD" in
         pytest -n auto --alluredir="$ALLURE_DIR" "$@"
         ;;
     report)
+        if ! command -v allure &>/dev/null; then
+            echo "Error: 'allure' CLI not found. Install: brew install allure" >&2
+            exit 1
+        fi
         echo "Generating Allure HTML report..."
         allure generate "$ALLURE_DIR" -o allure-report --clean
         echo "Report generated at: allure-report/index.html"

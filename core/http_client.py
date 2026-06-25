@@ -4,10 +4,11 @@ from urllib3.util.retry import Retry
 
 
 class HttpClient:
-    def __init__(self, base_url: str, timeout: int = 30):
+    def __init__(self, base_url: str, timeout: int = 30, verify: bool = True):
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
         self.session = requests.Session()
+        self.session.verify = verify
         self.session.headers.update(
             {
                 "Content-Type": "application/json",
