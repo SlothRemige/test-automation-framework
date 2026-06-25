@@ -1,5 +1,7 @@
 # Test Automation Framework
 
+[![Test](https://github.com/SlothRemige/test-automation-framework/actions/workflows/test.yml/badge.svg)](https://github.com/SlothRemige/test-automation-framework/actions/workflows/test.yml)
+
 Multi-platform test automation framework supporting Web, App (Android/iOS), and API testing.
 
 ## Quick Start
